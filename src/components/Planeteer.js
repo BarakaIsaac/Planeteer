@@ -1,29 +1,44 @@
-import React from "react";
+import React, {useState} from "react";
 
-function Planeteer() {
-  return (
-    <li className="cards__item">
-      <div className="card">
-        <img
-          src={"RENDER IMAGE"}
-          alt={"RENDER PERSON NAME"}
-          className="card__image"
-        />
-        <div className="card__content">
-          <div className="card__title">{"RENDER NAME"}</div>
-          <p className="card__text">{"CONDITIONALLY RENDER BIO OR QUOTE"}</p>
-          <div className="card__detail">
-            <p>{"RENDER TWITTER HANDLE"}</p>
-            <p>
-              {
-                "CONDITIONALLY RENDER WHETHER THE PERSON IS USA-BASED OR WORKING OVERSEAS"
-              }
-            </p>
-          </div>
-        </div>
-      </div>
-    </li>
-  );
-}
+  function Planeteer ({ planeteers }) {
+    const [showBio, setShowBio] = useState(true);
+    const yearDate = new Date().getFullYear();
+    
+    function handleClick () {
+      setShowBio((showBio) => !showBio);
+    }
+    return (
+      <>
+        {planeteers.map((planeteer) => {
+          return (
+            <li key={planeteer.id} className="cards__item">
+              <div className="card">
+                <img
+                  src={planeteer.pictureUrl}
+                  alt={planeteer.name}
+                  className="card__image"
+                  onClick={handleClick}
+                />
+                <div className="card__content">
+                  <div className="card__title">{planeteer.name}</div>
+                  <p className="card__text">
+                    {showBio ? planeteer.bio : planeteer.quote}
+                  </p>
+                  <div className="card__detail">
+                    <p>{planeteer.twitter}</p>
+                    <p>
+                      {planeteer.fromUSA ? "USA-Based" : "Working overseas"}
+                    </p>
+                    <p>{yearDate - planeteer.born} years old</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </>
+    );
+  }
+
 
 export default Planeteer;
